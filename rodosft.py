@@ -175,17 +175,21 @@ def main():
     login(nav, chave, usuario, senha)
 
     try:
-        val = nav.find_element(By.XPATH, "//input[@id='MainContent_txtServico']")
         for _, line in sheetSearch.iterrows():
             DATA_SERVIÇO, CORRIDA_ID = line['DATA_SERVIÇO'], line['CORRIDA_ID']
             if DATA_SERVIÇO == searchDay():
 
                 search(nav, CORRIDA_ID, DATA_SERVIÇO)
                 idcorrida, previsao, inicio, fim = "", "", "", ""
-                idcorrida, previsao, inicio, fim = dataMining(nav, idcorrida, previsao, inicio, fim)
+                table = nav.find_elements(By.XPATH, '//*[@id="MainContent_gvPrestacoesDeContas"]/tbody/tr[2]/td')
+                emptyData = " ".join([element.text for element in table])
+                if emptyData == 'Não foram localizados registros!':
+                    pass
+                else:
+                    idcorrida, previsao, inicio, fim = dataMining(nav, idcorrida, previsao, inicio, fim)
 
-                filePath = os.path.abspath('planilhaDiariaMonitriip.xlsx')
-                save(filePath, idcorrida, previsao, inicio, fim)
+                    filePath = os.path.abspath('planilhaDiariaMonitriip.xlsx')
+                    save(filePath, idcorrida, previsao, inicio, fim)
 
         renameAndMoveFile(os.path.abspath('planilhaDiariaMonitriip.xlsx'))
         
