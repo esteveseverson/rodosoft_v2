@@ -176,7 +176,7 @@ def main():
 
     try:
         val = nav.find_element(By.XPATH, "//input[@id='MainContent_txtServico']")
-        for _, line in sheet.iterrows():
+        for _, line in sheetSearch.iterrows():
             DATA_SERVIÇO, CORRIDA_ID = line['DATA_SERVIÇO'], line['CORRIDA_ID']
             if DATA_SERVIÇO == searchDay():
 
